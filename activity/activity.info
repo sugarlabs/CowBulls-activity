@@ -1,0 +1,9 @@
+[Activity]
+name = CowBulls
+activity_version = 1
+host_version = 1
+bundle_id = org.laptop.community.CowBulls
+icon = activity
+show_launcher = yes
+exec = sugar-activity activity.CowBullsActivtiy
+summary = turtle pattern programming challenge

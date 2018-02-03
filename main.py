@@ -1,195 +1,171 @@
-import random
-import pygame, sys
+import pygame
+import sys
 from pygame.locals import *
+import utils
+import g
 
-
-X = 900
-Y = 250
+X = 800
+Y = 200
 XX = 60
-YY = 30
-margin = 10
-img = pygame.image.load('icons/dialpad/1.png')
-img = pygame.transform.smoothscale(img, (70, 70))
-XGAP = 10 + img.get_rect().size[0]
-YGAP = 10 + img.get_rect().size[1]
-
-mmmp = pygame.image.load('icons/status/cow.png')
-mmmp = pygame.transform.smoothscale(mmmp, (50, 50))
-XXXGAP = 10+ mmmp.get_rect().size[0]
-
-TRIES = 0
-NumberEntered = []
-
-Numbers = {
-    pygame.K_1: '1',
-    pygame.K_2: '2',
-    pygame.K_3: '3',
-    pygame.K_4: '4',
-    pygame.K_5: '5',
-    pygame.K_6: '6',
-    pygame.K_7: '7',
-    pygame.K_8: '8',
-    pygame.K_9: '9',
-    pygame.K_0: '0',
-    pygame.K_KP0: '0',
-    pygame.K_KP1: '1',
-    pygame.K_KP2: '2',
-    pygame.K_KP3: '3',
-    pygame.K_KP4: '4',
-    pygame.K_KP5: '5',
-    pygame.K_KP6: '6',
-    pygame.K_KP7: '7',
-    pygame.K_KP8: '8',
-    pygame.K_KP9: '9',
-}
+YY = 25
+MARGIN = 10
+INPUT_SIZE = 70
+DISP_SIZE = 55
+XGAP = MARGIN + INPUT_SIZE
+DPX = MARGIN + DISP_SIZE
+BG_COLOR = (220, 220, 220)
 
 
 class CowBulls:
-    def __init__(self):
-        self.num = random.randint(100,999)
-        self.num = [int(x) for x in str(self.num)]
-        self.won = False
-        self.lost = False
+    def __init__(self, level=3):
+        self.attempts = 0
+        self.num = [int(x) for x in str(utils.get_random(level))]
+        self.level = level
+        self.game_over = False
+        self.lives, self.offset = utils.get_lives(self.level)
+        self.input = []
+        self.highlight = 0
 
     def display(self):
-        global imgx
-        screen = pygame.display.get_surface()
-        for y in range(3):
-            for x in range(3):
-                img = pygame.image.load('icons/dialpad/' + str(1+x + 3*y)+ '.png')
-                img = pygame.transform.smoothscale(img, (70, 70))
-                screen.blit(img, (X +x*(10+ img.get_rect().size[0]), Y + y*YGAP))
-        img = pygame.image.load('icons/dialpad/0.png')
-        img = pygame.transform.smoothscale(img, (70, 70))
-        print img.get_rect().size[0]
-        screen.blit(img, (X +1*(10+ img.get_rect().size[0]), Y + 3*YGAP))
-
-        img2 = pygame.image.load('icons/dialpad/tick.png')
-        img2 = pygame.transform.smoothscale(img2, (70, 70))
-        screen.blit(img2, (X, Y + 3*YGAP))
-
-        img3 = pygame.image.load('icons/dialpad/cancel.png')
-        img3 = pygame.transform.smoothscale(img3, (70, 70))
-        screen.blit(img3, (X +2*(10+ img.get_rect().size[0]), Y + 3*YGAP))
-
         for x in range(3):
-            img3 = pygame.image.load('icons/dialpad/entry.png')
-            img3 = pygame.transform.smoothscale(img3, (70, 20))
-            screen.blit(img3, (X +x*(10+ img.get_rect().size[0]), Y - 0.7*YGAP))
+            for y in range(4):
+                utils.blit_offset('dialpad/' + str(1 + x + 3 * y), (X, Y), (x, y))
 
-        for x in range(3):
-            img3 = pygame.image.load('icons/entries/question.png')
-            img3 = pygame.transform.smoothscale(img3, (50, 50))
-            screen.blit(img3, (XX +x*(10+ img3.get_rect().size[0]), YY))
-            imgx = pygame.image.load('icons/dialpad/entry.png')
-            imgx = pygame.transform.smoothscale(imgx, (50, 10))
-            screen.blit(imgx, (XX +x*(10+ img3.get_rect().size[0]), YY + (img3.get_rect().size[1])))
+        for x in range(int(self.level)):
+            utils.blit_offset('entries/entry-small', (XX, YY + DISP_SIZE), (x, 0), 1)
+            utils.blit_offset('status/bull', (XX, YY), (self.level + .5 + x, 0), 1)
+            utils.blit_offset('entries/question', (XX, YY), (x, 0), 1)
 
-            img4 = pygame.image.load('icons/status/bull.png')
-            img4 = pygame.transform.smoothscale(img4, (50, 50))
-            screen.blit(img4, (XX +(3.5+x)*(10+ img4.get_rect().size[0]), YY))
-            
-    def get_input(self, key):
-        if key in Numbers:
-            return Numbers[key]
-        else:
-            return None
+        for x in range(self.level):
+            utils.blit_offset('dialpad/entry-big', (X, Y), (x + self.offset, -0.7))
+        utils.blit_offset('lives/lives', (X, Y), (0, 5))
+        utils.blit_offset('lives/' + str(self.lives), (X, Y), (1, 5))
 
     def put_num(self, valy):
-        if len(NumberEntered)<3:
-            img3 = pygame.image.load('icons/dialpad/' + valy + '.png')
-            img3 = pygame.transform.smoothscale(img3, (70, 70))
-            screen.blit(img3, (X + len(NumberEntered)*(10+ img3.get_rect().size[0]), Y - 1.6*YGAP))
-            NumberEntered.append(int(valy))
+        if len(self.input) < self.level:
+            utils.blit_offset('dialpad/' + str(valy), (X, Y), (self.offset + len(self.input), -1.6))
+            self.input.append(int(valy))
+
+    def clear(self):
+        for x in range(self.level):
+            self.delete()
 
     def delete(self):
-        if (len(NumberEntered)!=0):
-            pygame.draw.rect(pygame.display.get_surface(), (200,200,200), (X + (len(NumberEntered)-1)*(XGAP), Y - 1.6 * YGAP, img.get_rect().size[1],img.get_rect().size[1]))
-            NumberEntered.pop()
+        if (len(self.input) != 0):
+            self.clear_patch(
+                (X + (self.offset + len(self.input) - 1) * (XGAP), Y - 1.6 * XGAP))
+            self.input.pop()
 
     def do_button(self, pos):
-        pos = ((pos[0]-X)/XGAP), ((pos[1]-Y)/YGAP)
-        num = (pos[1]*3 + pos[0] + 1)
+        pos = ((pos[0] - X) / XGAP), ((pos[1] - Y) / XGAP)
+        num = 3 * pos[1] + pos[0] + 1
         if num > 0 and num <= 9:
-            self.put_num(str(num))
+            self.put_num(num)
         elif num == 10:
             self.enter()
         elif num == 11:
-            self.put_num(str(0))
+            self.put_num(0)
         elif num == 12:
             self.delete()
 
-    def try_display(self):
-        global TRIES
-        tt = TRIES + 1
-        for x in range(3):
-            img3 = pygame.image.load('icons/entries/' + str(NumberEntered[x])+'.png')
-            img3 = pygame.transform.smoothscale(img3, (50, 50))
-            screen.blit(img3, (XX +x*(10+ img3.get_rect().size[0]), YY + tt*(10+ img3.get_rect().size[1])))
-            if self.num[x] == NumberEntered[x]:
-                img3 = pygame.image.load('icons/status/bull.png')
-                img3 = pygame.transform.smoothscale(img3, (50, 50))
-                screen.blit(img3, (XX +(3.5+x)*(XXXGAP), YY + tt*(XXXGAP)))
-            elif NumberEntered[x] in self.num:
-                img3 = pygame.image.load('icons/status/cow.png')
-                img3 = pygame.transform.smoothscale(img3, (50, 50))
-                screen.blit(img3, (XX +(3.5+x)*(XXXGAP), YY + tt*(XXXGAP)))
-            else:
-                img3 = pygame.image.load('icons/status/cancel.png')
-                img3 = pygame.transform.smoothscale(img3, (50, 50))
-                screen.blit(img3, (XX +(3.5+x)*(XXXGAP), YY + tt*(XXXGAP)))
+    def clear_patch(self, pos, size=INPUT_SIZE):
+        pygame.draw.rect(g.screen, BG_COLOR, (pos[0], pos[1], size, size))
 
+    def remove_glow(self):
+        if self.highlight:
+            if self.highlight % 3:
+                x, y = (self.highlight % 3) - 1, self.highlight / 3
+            else:
+                x, y = 2, self.highlight / 3 - 1
+            self.clear_patch((X + x * (XGAP), Y + y * XGAP))
+            utils.blit_offset('dialpad/' + str(self.highlight), (X, Y), (x, y))
+            self.highlight = 0
+
+    def glow(self, num, pos):
+        utils.blit_offset('dialpad/highlight', (X, Y), pos)
+        utils.blit_offset('dialpad/' + str(num), (X, Y), pos)
+
+    def highlight_bt(self, pos):
+        self.remove_glow()
+        pos = ((pos[0] - X) / XGAP), ((pos[1] - Y) / XGAP)
+
+        if pos[0] in range(3) and pos[1] in range(4):
+            num = 3 * pos[1] + pos[0] + 1
+            self.glow(num, pos)
+            self.highlight = num
+        else:
+            self.highlight = 0
+
+    def attempt_disp(self):
+        for x in range(self.level):
+            if self.num[x] == self.input[x]:
+                status = 'bull'
+            elif self.input[x] in self.num:
+                status = 'cow'
+            else:
+                status = 'cancel'
+            utils.blit_offset('status/' + status, (XX, YY), (self.level + .5 + x, self.attempts + 1), 1)
+            utils.blit_offset('entries/' + str(self.input[x]), (XX, YY), (x, self.attempts + 1), 1)
+
+    def display_answer(self):
+        for x in range(self.level):
+            tt = self.lives + 2
+            utils.blit_offset('entries/' + str(self.num[x]), (XX, YY), (x, self.lives + 2), 1)
+            utils.blit_offset('status/bull', (XX, YY), (x + 0.5 + self.level, self.lives + 2), 1)
 
     def enter(self):
-        global TRIES
-        if len(NumberEntered)!=3:
+        if len(self.input) != self.level:
             pass
         else:
-            self.try_display()
-            TRIES=TRIES + 1
-            screen = pygame.display.get_surface()
-            if NumberEntered == self.num:
-                img3 = pygame.image.load('icons/won.png')
-                screen.blit(img3, (550,50))
-                self.won = True
-            elif TRIES==5:
-                screen.set_alpha(100)
-                screen.fill((200,200,200, 100))
-                img3 = pygame.image.load('icons/lost.png')
-                screen.blit(img3, (550,50))
-                self.lost = True
-            [self.delete() for x in range(3)]
-                
+            self.attempt_disp()
+            self.attempts += 1
+            utils.blit_offset('lives/' + str(self.lives - self.attempts)), (X, Y), (1, 5))
+            status = None
+            if self.input == self.num:
+                status = 'won'
+            elif self.attempts == self.lives:
+                self.display_answer()
+                status = 'lost'
+            if status:
+                utils.load_blit(status, (550, 300))
+                self.game_over = True
 
+            self.clear()
 
     def run(self):
+        g.init()
         self.display()
         while True:
             for event in pygame.event.get():
-                if event.type == QUIT:
-                    pygame.quit()
-                    sys.exit()
-                elif not (self.won or self.lost):
+                if not self.game_over:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         self.do_button(event.pos)
+                    elif event.type == pygame.MOUSEMOTION:
+                        self.highlight_bt(event.pos)
                     elif event.type == pygame.KEYDOWN:
-                        valy = self.get_input(event.key)
-                        if valy:
-                            self.put_num(valy)
+                        value = utils.get_input(event.key)
+                        if value:
+                            self.put_num(value)
                         elif event.key == pygame.K_BACKSPACE:
                             self.delete()
                         elif event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
                             self.enter()
             pygame.display.update()
 
+    def restart(self):
+        self.init(self.level)
+        self.run()
+
+    def change_level(self, level):
+        self.init(level)
+        self.run()
+
+
 
 if __name__ == "__main__":
     pygame.init()
     pygame.display.set_mode((1200, 700))
-    pygame.display.set_caption('CowBulls')
-    screen = pygame.display.get_surface()
-    screen.fill((200,200,200))
-    game = CowBulls()
+    game = CowBulls(int(sys.argv[1]))
     game.run()
     pygame.display.quit()
     pygame.quit()
