@@ -50,17 +50,21 @@ def get_input(key):
     else:
         return None
 
-def blit_offset(file_path, pos, offset, flag = 0):
+
+def blit_offset(file_path, pos, offset, flag=0):
     if not flag:
-        load_blit(file_path, (pos[0] + offset[0]*g.XGAP, pos[1] + offset[1]*g.XGAP))
+        load_blit(file_path, 
+        (pos[0] + offset[0] * g.XGAP, pos[1] + offset[1] * g.XGAP))
     if flag:
-        load_blit(file_path, (pos[0] + offset[0]*g.DKP, pos[1] + offset[1]*g.DKP))
+        load_blit(file_path,
+        (pos[0] + offset[0] * g.DKP, pos[1] + offset[1] * g.DKP))
+
 
 def load_blit(file_path, pos):
     file_path = 'data/' + file_path + '.png'
     sizex, sizey = g.images[file_path].get_rect().size
     img = pygame.transform.smoothscale(
-        g.images[file_path], (int(sizex*g.scale), int(sizey*g.scale)))
+        g.images[file_path], (int(sizex * g.scale), int(sizey * g.scale)))
     g.screen.blit(img, pos)
 
 

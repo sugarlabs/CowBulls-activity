@@ -17,8 +17,7 @@
 import sys
 import pygame
 from pygame.locals import *
-from utils import *
-import g
+
 from gi.repository import Gtk
 import logging
 class CowBulls:
@@ -38,18 +37,21 @@ class CowBulls:
                 blit_offset('dialpad/' + str(1 + x + 3 * y), g.DIALPAD, (x, y))
 
         for x in range(int(self.level)):
-            blit_offset('entries/entry-small', (g.ATTEMPTS[0], g.ATTEMPTS[1] + g.DISP_SIZE), (x, 0), 1)
+            blit_offset('entries/entry-small',
+                        (g.ATTEMPTS[0], g.ATTEMPTS[1] + g.DISP_SIZE), (x, 0), 1)
             blit_offset('status/bull', g.ATTEMPTS, (self.level + .5 + x, 0), 1)
             blit_offset('entries/question', g.ATTEMPTS, (x, 0), 1)
 
         for x in range(self.level):
-            blit_offset('dialpad/entry-big', g.DIALPAD, (x + self.offset, -0.7))
+            blit_offset('dialpad/entry-big', g.DIALPAD,
+                        (x + self.offset, -0.7))
         blit_offset('lives/lives', g.DIALPAD, (0, 5))
         blit_offset('lives/' + str(self.lives), g.DIALPAD, (1, 5))
 
     def put_num(self, valy):
         if len(self.input) < self.level:
-            blit_offset('dialpad/' + str(valy), g.DIALPAD, (self.offset + len(self.input), -1.6))
+            blit_offset('dialpad/' + str(valy), g.DIALPAD,
+                        (self.offset + len(self.input), -1.6))
             self.input.append(int(valy))
 
     def clear(self):
@@ -58,12 +60,13 @@ class CowBulls:
 
     def delete(self):
         if (len(self.input) != 0):
-            g.clear_patch(
-                (g.DIALPAD[0] + (self.offset + len(self.input) - 1) * (g.XGAP), g.DIALPAD[1] - 1.6 * g.XGAP))
+            g.clear_patch( (g.DIALPAD[0] + (self.offset + len(self.input) - 1) * 
+                           (g.XGAP), g.DIALPAD[1] - 1.6 * g.XGAP))
             self.input.pop()
 
     def do_button(self, pos):
-        pos = (int((pos[0] - g.DIALPAD[0]) / g.XGAP)), int((pos[1] - g.DIALPAD[1]) / g.XGAP)
+        pos = (int((pos[0] - g.DIALPAD[0]) / g.XGAP)),
+               int((pos[1] - g.DIALPAD[1]) / g.XGAP)
         num = 3 * pos[1] + pos[0] + 1
         logging.debug(str(pos))
         logging.debug(str(num))
@@ -83,7 +86,8 @@ class CowBulls:
                 x, y = (self.highlight % 3) - 1, self.highlight / 3
             else:
                 x, y = 2, self.highlight / 3 - 1
-            g.clear_patch((g.DIALPAD[0] + x * (g.XGAP), g.DIALPAD[1] + y * g.XGAP))
+            g.clear_patch((g.DIALPAD[0] + x * (g.XGAP),
+                           g.DIALPAD[1] + y * g.XGAP))
             blit_offset('dialpad/' + str(self.highlight), g.DIALPAD, (x, y))
             self.highlight = 0
 
@@ -93,7 +97,8 @@ class CowBulls:
 
     def highlight_bt(self, pos):
         self.remove_glow()
-        pos = int((pos[0] - g.DIALPAD[0]) / g.XGAP), int((pos[1] - g.DIALPAD[1]) / g.XGAP)
+        pos = int((pos[0] - g.DIALPAD[0]) / g.XGAP),
+              int((pos[1] - g.DIALPAD[1]) / g.XGAP)
 
         if pos[0] in range(3) and pos[1] in range(4):
             num = 3 * pos[1] + pos[0] + 1
@@ -113,14 +118,18 @@ class CowBulls:
                 status = 'cow'
             else:
                 status = 'cancel'
-            blit_offset('status/' + status, g.ATTEMPTS, (self.level + .5 + x, self.attempts + 1), 1)
-            blit_offset('entries/' + str(self.input[x]), g.ATTEMPTS, (x, self.attempts + 1), 1)
+            blit_offset('status/' + status, g.ATTEMPTS,
+                        (self.level + .5 + x, self.attempts + 1), 1)
+            blit_offset(
+                'entries/' + str(self.input[x]), g.ATTEMPTS, (x, self.attempts + 1), 1)
 
     def display_answer(self):
         for x in range(self.level):
             tt = self.lives + 2
-            blit_offset('entries/' + str(self.num[x]), g.ATTEMPTS, (x, self.lives + 2), 1)
-            blit_offset('status/bull', g.ATTEMPTS, (x + 0.5 + self.level, self.lives + 2), 1)
+            blit_offset(
+                'entries/' + str(self.num[x]), g.ATTEMPTS, (x, self.lives + 2), 1)
+            blit_offset('status/bull', g.ATTEMPTS,
+                        (x + 0.5 + self.level, self.lives + 2), 1)
 
     def enter(self):
         if len(self.input) != self.level:
@@ -128,7 +137,8 @@ class CowBulls:
         else:
             self.attempt_disp()
             self.attempts += 1
-            blit_offset('lives/' + str(self.lives - self.attempts), g.DIALPAD, (1, 5))
+            blit_offset('lives/' + str(self.lives - self.attempts),
+                        g.DIALPAD, (1, 5))
             status = None
             if self.input == self.num:
                 status = 'won'

@@ -15,7 +15,7 @@ class PygameCanvas(Gtk.EventBox):
         GObject.GObject.__init__(self)
 
         global CANVAS
-        assert CANVAS == None, "Only one PygameCanvas can be created, ever."
+        assert CANVAS is None, "Only one PygameCanvas can be created, ever."
         CANVAS = self
 
         # Initialize Events translator before widget gets "realized".
@@ -70,7 +70,7 @@ class PygameCanvas(Gtk.EventBox):
             return None
 
         _tmp_dir = os.path.join(self._activity.get_activity_root(),
-            'tmp')
+                                'tmp')
         _file_path = os.path.join(_tmp_dir, 'preview.png')
 
         width = PREVIEW_SIZE[0]
