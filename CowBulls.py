@@ -66,13 +66,13 @@ class CowBulls:
 
     def delete(self):
         if (len(self.input) != 0):
-            g.clear_patch( (g.DIALPAD[0] + (self.offset + len(self.input) - 1) * 
+            g.clear_patch((g.DIALPAD[0] + (self.offset + len(self.input) - 1) *
                            (g.XGAP), g.DIALPAD[1] - 1.6 * g.XGAP))
             self.input.pop()
 
     def do_button(self, pos):
-        pos = (int((pos[0] - g.DIALPAD[0]) / g.XGAP)),
-               int((pos[1] - g.DIALPAD[1]) / g.XGAP)
+        pos = (int((pos[0] - g.DIALPAD[0]) / g.XGAP)
+               ), int((pos[1] - g.DIALPAD[1]) / g.XGAP)
         num = 3 * pos[1] + pos[0] + 1
 
         if pos[1] >= 0 and pos[0] >= 0:
@@ -102,8 +102,8 @@ class CowBulls:
 
     def highlight_bt(self, pos):
         self.remove_glow()
-        pos = int((pos[0] - g.DIALPAD[0]) / g.XGAP),
-              int((pos[1] - g.DIALPAD[1]) / g.XGAP)
+        pos = int((pos[0] - g.DIALPAD[0]) /
+                  g.XGAP), int((pos[1] - g.DIALPAD[1]) / g.XGAP)
 
         if pos[0] in range(3) and pos[1] in range(4):
             num = 3 * pos[1] + pos[0] + 1

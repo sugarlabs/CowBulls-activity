@@ -7,6 +7,7 @@ app = 'CowBulls'
 BG_COLOR = (220, 220, 220)
 images = {}
 
+
 def init():
     global screen, images, scale
     global INPUT_SIZE, DISP_SIZE, DIALPAD
@@ -24,11 +25,11 @@ def init():
     scale = min([w / 1200.0, h / 700.0])
 
     INPUT_SIZE = 75 * scale
-    DISP_SIZE  = 55 * scale
-    XGAP       = (10 + INPUT_SIZE) * scale
-    DKP        = (10 + DISP_SIZE) * scale
-    ATTEMPTS   = (60 * scale, 25 * scale)
-    DIALPAD    = (800 * scale, 200 * scale)
+    DISP_SIZE = 55 * scale
+    XGAP = (10 + INPUT_SIZE) * scale
+    DKP = (10 + DISP_SIZE) * scale
+    ATTEMPTS = (60 * scale, 25 * scale)
+    DIALPAD = (800 * scale, 200 * scale)
 
     # pos = pygame.mouse.get_pos()
     # pointer = utils.load_image('pointer.png', True)
@@ -42,6 +43,12 @@ def load_image(file_path):
 
 def clear_patch(pos, size=0):
     if not size:
-        pygame.draw.rect(screen, BG_COLOR, (pos[0], pos[1], INPUT_SIZE, INPUT_SIZE))
+        pygame.draw.rect(
+            screen,
+            BG_COLOR,
+            (pos[0],
+             pos[1],
+                INPUT_SIZE,
+                INPUT_SIZE))
     else:
         pygame.draw.rect(screen, BG_COLOR, (pos[0], pos[1], size, size))

@@ -53,11 +53,11 @@ def get_input(key):
 
 def blit_offset(file_path, pos, offset, flag=0):
     if not flag:
-        load_blit(file_path, 
-        (pos[0] + offset[0] * g.XGAP, pos[1] + offset[1] * g.XGAP))
+        load_blit(file_path,
+                  (pos[0] + offset[0] * g.XGAP, pos[1] + offset[1] * g.XGAP))
     if flag:
         load_blit(file_path,
-        (pos[0] + offset[0] * g.DKP, pos[1] + offset[1] * g.DKP))
+                  (pos[0] + offset[0] * g.DKP, pos[1] + offset[1] * g.DKP))
 
 
 def load_blit(file_path, pos):
