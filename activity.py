@@ -106,7 +106,7 @@ class CowBullsActivtiy(activity.Activity):
 
     def change_combo(self, combo):
         level = combo.get_active()
-        self.game.change_level(int(level))
+        self.game.change_level(int(level) + 2)
 
     def get_preview(self):
         return self._pygamecanvas.get_preview()
