@@ -3,17 +3,6 @@ import os
 import g
 import random
 
-X = 800
-Y = 200
-XX = 60
-YY = 25
-MARGIN = 10
-INPUT_SIZE = 70
-DISP_SIZE = 55
-XGAP = MARGIN + INPUT_SIZE
-DPX = MARGIN + DISP_SIZE
-BG_COLOR = (220, 220, 220)
-
 Numbers = {
     pygame.K_1: '1',
     pygame.K_2: '2',
@@ -52,13 +41,16 @@ def get_input(key):
 
 def blit_offset(file_path, pos, offset, flag = 0):
     if not flag:
-        load_blit(file_path, pos[0] + offset[0]*XGAP, pos[1] + offset[1]*XGAP)
+        load_blit(file_path, (pos[0] + offset[0]*g.XGAP, pos[1] + offset[1]*g.XGAP))
     if flag:
-        load_blit(file_path, pos[0] + offset[0]*DPX, pos[1] + offset[1]*DPX)
+        load_blit(file_path, (pos[0] + offset[0]*g.DKP, pos[1] + offset[1]*g.DKP))
 
 def load_blit(file_path, pos):
-    file_path = 'icons/' + file_path + '.png'
-    g.screen.blit(g.images[file_path], pos)
+    file_path = 'data/' + file_path + '.png'
+    sizex, sizey = g.images[file_path].get_rect().size
+    img = pygame.transform.smoothscale(
+        g.images[file_path], (int(sizex*g.scale), int(sizey*g.scale)))
+    g.screen.blit(img, pos)
 
 
 def get_lives(level):

@@ -26,26 +26,14 @@ from sugar3 import profile
 
 import pygame
 import sugargame.canvas
-import main
+import CowBulls
 
 
 class CowBullsActivtiy(activity.Activity):
-    LOWER = 0
-    UPPER = 400
 
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
 
-        # Get user's Sugar colors
-        self._sugarcolors = profile.get_color().to_string().split(',')
-        colors = [[int(self._sugarcolors[0][1:3], 16),
-                   int(self._sugarcolors[0][3:5], 16),
-                   int(self._sugarcolors[0][5:7], 16)],
-                  [int(self._sugarcolors[1][1:3], 16),
-                   int(self._sugarcolors[1][3:5], 16),
-                   int(self._sugarcolors[1][5:7], 16)]]
-
-        # No sharing
         self.max_participants = 1
 
         # Build the activity toolbar.
@@ -57,15 +45,14 @@ class CowBullsActivtiy(activity.Activity):
 
         self.separator0 = Gtk.SeparatorToolItem()
         self.separator0.props.draw = False
-        if Gdk.Screen.width() > 1023:
-            toolbox.toolbar.insert(self.separator0, -1)
+        toolbox.toolbar.insert(self.separator0, -1)
         self.separator0.show()
 
         cyan = ToolButton('cyan')
         toolbox.toolbar.insert(cyan, -1)
         cyan.set_tooltip(_('Reset'))
         cyan.connect('clicked', self._button_cb, 'cyan')
-        cyan.set_sensitive(False)
+        cyan.set_sensitive(True)
         cyan.show()
 
         separator2 = Gtk.SeparatorToolItem()
@@ -108,7 +95,7 @@ class CowBullsActivtiy(activity.Activity):
         self._toolbar = toolbox.toolbar
 
         # Create the game instance.
-        self.game = main.CowBulls()
+        self.game = CowBulls.CowBulls()
 
         # Build the Pygame canvas.
         self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(
@@ -120,6 +107,7 @@ class CowBullsActivtiy(activity.Activity):
 
         Gdk.Screen.get_default().connect('size-changed',
                                          self.__configure_cb)
+        self.game.set_cyan_button(cyan)
 
     def change_combo(self, combo):
         level = combo.get_active()
