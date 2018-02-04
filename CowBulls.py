@@ -19,17 +19,23 @@ import pygame
 from pygame.locals import *
 
 from gi.repository import Gtk
-import logging
+
+from sugar3.graphics.style import GRID_CELL_SIZE
+
+import g
+from utils import *
+
+
 class CowBulls:
     def __init__(self, level=3):
         self.attempts = 0
+        self.journal = True  # set to False if we come in via main()
         self.num = [int(x) for x in str(get_random(level))]
         self.level = level
         self.game_over = False
         self.lives, self.offset = get_lives(self.level)
         self.input = []
         self.highlight = 0
-        
 
     def display(self):
         for x in range(3):
@@ -68,10 +74,9 @@ class CowBulls:
         pos = (int((pos[0] - g.DIALPAD[0]) / g.XGAP)),
                int((pos[1] - g.DIALPAD[1]) / g.XGAP)
         num = 3 * pos[1] + pos[0] + 1
-        logging.debug(str(pos))
-        logging.debug(str(num))
-        if pos[1]>= 0 and pos[0]>=0:
-            if num in range(1,10):
+
+        if pos[1] >= 0 and pos[0] >= 0:
+            if num in range(1, 10):
                 self.put_num(num)
             elif num == 10:
                 self.enter()
@@ -107,8 +112,8 @@ class CowBulls:
         else:
             self.highlight = 0
 
-    def set_cyan_button(self, cyan):
-        self.cyan_button = cyan
+    def set_restart_button(self, restart):
+        self.restart_button = restart
 
     def attempt_disp(self):
         for x in range(self.level):
@@ -155,20 +160,27 @@ class CowBulls:
         flushing = True
         while flushing:
             flushing = False
-
-            while Gtk.events_pending():
-                Gtk.main_iteration()
+            if self.journal:
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
             for event in pygame.event.get():
                 flushing = True
 
     def run(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            elif event.type == pygame.VIDEORESIZE:
+                pygame.display.set_mode(
+                    (event.size[0], event.size[1] - GRID_CELL_SIZE), pygame.RESIZABLE)
+                break
         g.init()
         self.display()
         while True:
-
             # Pump Gtk messages.
-            while Gtk.events_pending():
-                Gtk.main_iteration()
+            if self.journal:
+                while Gtk.events_pending():
+                    Gtk.main_iteration()
             for event in pygame.event.get():
                 if not self.game_over:
                     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -178,7 +190,6 @@ class CowBulls:
                         self.highlight_bt(event.pos)
                         self.flush_queue()
                     elif event.type == pygame.KEYDOWN:
-                        logging.debug("Inside it")
                         value = get_input(event.key)
                         if value:
                             self.put_num(value)
@@ -196,6 +207,7 @@ class CowBulls:
         self.attempts = 0
         self.num = [int(x) for x in str(get_random(level))]
         self.level = level
+        self.journal = True
         self.game_over = False
         self.lives, self.offset = get_lives(self.level)
         self.input = []
@@ -205,8 +217,9 @@ class CowBulls:
 
 if __name__ == "__main__":
     pygame.init()
-    pygame.display.set_mode((1024, 768), pygame.FULLSCREEN) 
+    pygame.display.set_mode((1024, 700), pygame.FULLSCREEN)
     game = CowBulls(int(sys.argv[1]))
+    game.journal = False
     game.run()
     pygame.display.quit()
     pygame.quit()
