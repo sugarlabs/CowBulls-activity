@@ -42,40 +42,35 @@ class CowBullsActivtiy(activity.Activity):
         toolbox.toolbar.insert(activity_button, 0)
         activity_button.show()
 
-        self.separator0 = Gtk.SeparatorToolItem()
-        self.separator0.props.draw = False
-        toolbox.toolbar.insert(self.separator0, -1)
-        self.separator0.show()
+        restart = ToolButton('restart')
+        toolbox.toolbar.insert(restart, -1)
+        restart.set_tooltip(_('Reset'))
+        restart.connect('clicked', self._button_cb, 'restart')
+        restart.set_sensitive(True)
+        restart.show()
 
-        cyan = ToolButton('cyan')
-        toolbox.toolbar.insert(cyan, -1)
-        cyan.set_tooltip(_('Reset'))
-        cyan.connect('clicked', self._button_cb, 'cyan')
-        cyan.set_sensitive(True)
-        cyan.show()
+        separator = Gtk.SeparatorToolItem()
+        separator.props.draw = True
+        separator.set_expand(False)
+        toolbox.toolbar.insert(separator, -1)
+        separator.show()
 
-        separator2 = Gtk.SeparatorToolItem()
-        separator2.props.draw = True
-        separator2.set_expand(False)
-        toolbox.toolbar.insert(separator2, -1)
-        separator2.show()
-
-        item1 = Gtk.ToolItem()
+        comboLabel = Gtk.ToolItem()
         label1 = Gtk.Label()
         label1.set_text(_('Levels') + ' ')
-        item1.add(label1)
-        toolbox.toolbar.insert(item1, -1)
+        comboLabel.add(label1)
+        toolbox.toolbar.insert(comboLabel, -1)
 
-        item2 = Gtk.ToolItem()
+        comboField = Gtk.ToolItem()
 
         levels = (_('Easy'),
                   _('Medium'),
                   _('Hard'))
 
         combo = Combo(levels)
-        item2.add(combo)
+        comboField.add(combo)
         combo.connect('changed', self.change_combo)
-        toolbox.toolbar.insert(item2, -1)
+        toolbox.toolbar.insert(comboField, -1)
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
@@ -92,9 +87,10 @@ class CowBullsActivtiy(activity.Activity):
         self.set_toolbar_box(toolbox)
 
         self._toolbar = toolbox.toolbar
+        self.show_all()
 
         # Create the game instance.
-        self.game = CowBulls.CowBulls()
+        self.game = CowBulls.CowBulls(3)
 
         # Build the Pygame canvas.
         self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(
@@ -106,7 +102,7 @@ class CowBullsActivtiy(activity.Activity):
 
         Gdk.Screen.get_default().connect('size-changed',
                                          self.__configure_cb)
-        self.game.set_cyan_button(cyan)
+        self.game.set_restart_button(restart)
 
     def change_combo(self, combo):
         level = combo.get_active()
@@ -117,7 +113,6 @@ class CowBullsActivtiy(activity.Activity):
 
     def __configure_cb(self, event):
         ''' Screen size has changed '''
-        logging.debug(self._pygamecanvas.get_allocation())
         pygame.display.set_mode((Gdk.Screen.width(),
                                  Gdk.Screen.height() - GRID_CELL_SIZE),
                                 pygame.RESIZABLE)
@@ -125,18 +120,6 @@ class CowBullsActivtiy(activity.Activity):
         self.game.g_init()
         self._speed_range.set_value(200)
         self.game.run(restore=True)
-
-    def read_file(self, file_path):
-        try:
-            f = open(file_path, 'r')
-        except Exception as e:
-            logging.debug('Error opening %s: %s' % (file_path, e))
-            return
-        f.close()
-
-    def write_file(self, file_path):
-        f = open(file_path, 'w')
-        f.close()
 
     def _button_cb(self, button=None, color=None):
         self.game.restart()
@@ -156,4 +139,4 @@ class Combo(Gtk.ComboBox):
         self.pack_start(cell, True)
         self.add_attribute(cell, 'text', 0)
 
-        self.set_active(0)
+        self.set_active(1)

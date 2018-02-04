@@ -1,23 +1,16 @@
-import pygame
 import os
+import pygame
 import utils
 
 app = 'CowBulls'
-ver = '1'
 
 BG_COLOR = (220, 220, 220)
 images = {}
-
 
 def init():
     global screen, images, scale
     global INPUT_SIZE, DISP_SIZE, DIALPAD
     global ATTEMPTS, XGAP, DKP
-    
-    INPUT_SIZE = 70
-    DISP_SIZE  = 55
-    XGAP       = 10 + INPUT_SIZE
-    DKP        = 10 + DISP_SIZE
 
     for root, subdirs, files in os.walk('data'):
         for file in files:
@@ -28,15 +21,16 @@ def init():
     screen.fill(BG_COLOR)
     pygame.display.flip()
     w, h = screen.get_size()
-    scale = min([w/1200.0, h/700.0])
-    INPUT_SIZE *= scale
-    DISP_SIZE *= scale
-    DIALPAD    = (800*scale, 200*scale)
-    ATTEMPTS   = (60*scale, 25*scale)
-    XGAP *= scale
-    DKP *= scale
+    scale = min([w / 1200.0, h / 700.0])
 
-    pos = pygame.mouse.get_pos()
+    INPUT_SIZE = 75 * scale
+    DISP_SIZE  = 55 * scale
+    XGAP       = (10 + INPUT_SIZE) * scale
+    DKP        = (10 + DISP_SIZE) * scale
+    ATTEMPTS   = (60 * scale, 25 * scale)
+    DIALPAD    = (800 * scale, 200 * scale)
+
+    # pos = pygame.mouse.get_pos()
     # pointer = utils.load_image('pointer.png', True)
     # pygame.mouse.set_visible(False)
 
