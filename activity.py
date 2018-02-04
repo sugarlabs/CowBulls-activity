@@ -1,8 +1,7 @@
 # activity.py
 # my standard link between sugar and my activity
 """
-    Copyright (C) 2010  Peter Hewitt
-    Copyright (C) 2013  Ignacio Rodriguez
+    Copyright (C) 2018  Rahul Bothra
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

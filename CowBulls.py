@@ -1,5 +1,21 @@
-import pygame
+#!/usr/bin/python
+# CowBulls.py
+"""
+    Copyright (C) 2018  Rahul Bothra
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+"""
+"""
+    Acknowledgement:
+    Icons borrowed from multiple authors via FlatIcon: https://www.flaticon.com
+"""
+
+
 import sys
+import pygame
 from pygame.locals import *
 from utils import *
 import g
