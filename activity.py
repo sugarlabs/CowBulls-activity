@@ -10,7 +10,6 @@
 
 """
 
-import os
 from gettext import gettext as _
 
 from gi.repository import Gtk
@@ -21,7 +20,6 @@ from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.activity.widgets import ActivityToolbarButton, StopButton
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.style import GRID_CELL_SIZE
-from sugar3 import profile
 
 import pygame
 import sugargame.canvas

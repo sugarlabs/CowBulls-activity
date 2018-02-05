@@ -1,6 +1,6 @@
 import os
 import pygame
-import utils
+
 
 app = 'CowBulls'
 
@@ -9,7 +9,7 @@ images = {}
 
 
 def init():
-    global screen, images, scale
+    global screen, images, scale, w, h, pointer, pos
     global INPUT_SIZE, DISP_SIZE, DIALPAD
     global ATTEMPTS, XGAP, DKP
 
@@ -29,11 +29,7 @@ def init():
     XGAP = (10 + INPUT_SIZE) * scale
     DKP = (10 + DISP_SIZE) * scale
     ATTEMPTS = (60 * scale, 25 * scale)
-    DIALPAD = (800 * scale, 200 * scale)
-
-    # pos = pygame.mouse.get_pos()
-    # pointer = utils.load_image('pointer.png', True)
-    # pygame.mouse.set_visible(False)
+    DIALPAD = (900 * scale, 200 * scale)
 
 
 def load_image(file_path):

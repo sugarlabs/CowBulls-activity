@@ -10,7 +10,6 @@
 """
 
 import pygame
-import os
 import g
 import random
 

@@ -12,8 +12,6 @@
     Acknowledgement:
     Icons borrowed from multiple authors via FlatIcon: https://www.flaticon.com
 """
-
-
 import sys
 import pygame
 from pygame.locals import *
@@ -23,41 +21,46 @@ from gi.repository import Gtk
 from sugar3.graphics.style import GRID_CELL_SIZE
 
 import g
-from utils import *
+import utils
 
 
 class CowBulls:
     def __init__(self, level=3):
         self.attempts = 0
         self.journal = True  # set to False if we come in via main()
-        self.num = [int(x) for x in str(get_random(level))]
+        self.num = [int(x) for x in str(utils.get_random(level))]
         self.level = level
         self.game_over = False
-        self.lives, self.offset = get_lives(self.level)
+        self.lives, self.offset = utils.get_lives(self.level)
         self.input = []
         self.highlight = 0
+        self.flag = 0
 
     def display(self):
+        self.flag = 1
         for x in range(3):
             for y in range(4):
-                blit_offset('dialpad/' + str(1 + x + 3 * y), g.DIALPAD, (x, y))
+                utils.blit_offset('dialpad/' + str(1 + x + 3 * y),
+                                  g.DIALPAD, (x, y))
 
         for x in range(int(self.level)):
-            blit_offset('entries/entry-small',
-                        (g.ATTEMPTS[0], g.ATTEMPTS[1] + g.DISP_SIZE), (x, 0), 1)
-            blit_offset('status/bull', g.ATTEMPTS, (self.level + .5 + x, 0), 1)
-            blit_offset('entries/question', g.ATTEMPTS, (x, 0), 1)
+            utils.blit_offset('entries/entry-small',
+                              (g.ATTEMPTS[0], g.ATTEMPTS[1] + g.DISP_SIZE),
+                              (x, 0), 1)
+            utils.blit_offset('status/bull', g.ATTEMPTS,
+                              (self.level + .5 + x, 0), 1)
+            utils.blit_offset('entries/question', g.ATTEMPTS, (x, 0), 1)
 
         for x in range(self.level):
-            blit_offset('dialpad/entry-big', g.DIALPAD,
-                        (x + self.offset, -0.7))
-        blit_offset('lives/lives', g.DIALPAD, (0, 5))
-        blit_offset('lives/' + str(self.lives), g.DIALPAD, (1, 5))
+            utils.blit_offset('dialpad/entry-big', g.DIALPAD,
+                              (x + self.offset, -0.7))
+        utils.blit_offset('lives/lives', g.DIALPAD, (0, 5))
+        utils.blit_offset('lives/' + str(self.lives), g.DIALPAD, (1, 5))
 
     def put_num(self, valy):
         if len(self.input) < self.level:
-            blit_offset('dialpad/' + str(valy), g.DIALPAD,
-                        (self.offset + len(self.input), -1.6))
+            utils.blit_offset('dialpad/' + str(valy), g.DIALPAD,
+                              (self.offset + len(self.input), -1.6))
             self.input.append(int(valy))
 
     def clear(self):
@@ -93,12 +96,13 @@ class CowBulls:
                 x, y = 2, self.highlight / 3 - 1
             g.clear_patch((g.DIALPAD[0] + x * (g.XGAP),
                            g.DIALPAD[1] + y * g.XGAP))
-            blit_offset('dialpad/' + str(self.highlight), g.DIALPAD, (x, y))
+            utils.blit_offset('dialpad/' + str(self.highlight),
+                              g.DIALPAD, (x, y))
             self.highlight = 0
 
     def glow(self, num, pos):
-        blit_offset('dialpad/highlight', g.DIALPAD, pos)
-        blit_offset('dialpad/' + str(num), g.DIALPAD, pos)
+        utils.blit_offset('dialpad/highlight', g.DIALPAD, pos)
+        utils.blit_offset('dialpad/' + str(num), g.DIALPAD, pos)
 
     def highlight_bt(self, pos):
         self.remove_glow()
@@ -123,18 +127,19 @@ class CowBulls:
                 status = 'cow'
             else:
                 status = 'cancel'
-            blit_offset('status/' + status, g.ATTEMPTS,
-                        (self.level + .5 + x, self.attempts + 1), 1)
-            blit_offset(
-                'entries/' + str(self.input[x]), g.ATTEMPTS, (x, self.attempts + 1), 1)
+            utils.blit_offset('status/' + status, g.ATTEMPTS,
+                              (self.level + .5 + x, self.attempts + 1), 1)
+            utils.blit_offset(
+                'entries/' + str(self.input[x]), g.ATTEMPTS,
+                (x, self.attempts + 1.1), 1)
 
     def display_answer(self):
         for x in range(self.level):
-            tt = self.lives + 2
-            blit_offset(
-                'entries/' + str(self.num[x]), g.ATTEMPTS, (x, self.lives + 2), 1)
-            blit_offset('status/bull', g.ATTEMPTS,
-                        (x + 0.5 + self.level, self.lives + 2), 1)
+            utils.blit_offset(
+                'entries/' + str(self.num[x]),
+                g.ATTEMPTS, (x, self.lives + 2), 1)
+            utils.blit_offset('status/bull', g.ATTEMPTS,
+                              (x + 0.5 + self.level, self.lives + 2), 1)
 
     def enter(self):
         if len(self.input) != self.level:
@@ -142,8 +147,8 @@ class CowBulls:
         else:
             self.attempt_disp()
             self.attempts += 1
-            blit_offset('lives/' + str(self.lives - self.attempts),
-                        g.DIALPAD, (1, 5))
+            utils.blit_offset('lives/' + str(self.lives - self.attempts),
+                              g.DIALPAD, (1, 5))
             status = None
             if self.input == self.num:
                 status = 'won'
@@ -151,7 +156,7 @@ class CowBulls:
                 self.display_answer()
                 status = 'lost'
             if status:
-                load_blit(status, (550, 300))
+                utils.load_blit(status, (g.w/2, g.h/2 - (128*g.scale)))
                 self.game_over = True
 
             self.clear()
@@ -172,16 +177,20 @@ class CowBulls:
                 return
             elif event.type == pygame.VIDEORESIZE:
                 pygame.display.set_mode(
-                    (event.size[0], event.size[1] - GRID_CELL_SIZE), pygame.RESIZABLE)
+                    (event.size[0], event.size[1] - GRID_CELL_SIZE),
+                    pygame.RESIZABLE)
                 break
         g.init()
         self.display()
-        while True:
+        going = True
+        while going:
             # Pump Gtk messages.
             if self.journal:
                 while Gtk.events_pending():
                     Gtk.main_iteration()
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    going = False
                 if not self.game_over:
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         self.do_button(event.pos)
@@ -190,7 +199,7 @@ class CowBulls:
                         self.highlight_bt(event.pos)
                         self.flush_queue()
                     elif event.type == pygame.KEYDOWN:
-                        value = get_input(event.key)
+                        value = utils.get_input(event.key)
                         if value:
                             self.put_num(value)
                         elif event.key == pygame.K_BACKSPACE:
@@ -205,11 +214,11 @@ class CowBulls:
 
     def change_level(self, level):
         self.attempts = 0
-        self.num = [int(x) for x in str(get_random(level))]
+        self.num = [int(x) for x in str(utils.get_random(level))]
         self.level = level
         self.journal = True
         self.game_over = False
-        self.lives, self.offset = get_lives(self.level)
+        self.lives, self.offset = utils.get_lives(self.level)
         self.input = []
         self.highlight = 0
         self.run()
