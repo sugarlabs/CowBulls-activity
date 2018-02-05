@@ -16,6 +16,8 @@ import sys
 import pygame
 from pygame.locals import *
 
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from sugar3.graphics.style import GRID_CELL_SIZE
