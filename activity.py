@@ -104,7 +104,7 @@ class CowBullsActivtiy(activity.Activity):
 
     def change_combo(self, combo):
         level = combo.get_active()
-        self.game.change_level(int(level) + 2)
+        self.game.change_level(int(level) + 3)
 
     def get_preview(self):
         return self._pygamecanvas.get_preview()
@@ -137,4 +137,4 @@ class Combo(Gtk.ComboBox):
         self.pack_start(cell, True)
         self.add_attribute(cell, 'text', 0)
 
-        self.set_active(1)
+        self.set_active(0)
