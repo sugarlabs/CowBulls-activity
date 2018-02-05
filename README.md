@@ -5,9 +5,9 @@ Sugar Activity of the classic "CowBulls" game, with a slight twist ;)
  - This is a [sugar](https://sugarlabs.org/) activity
  - For instructions on how to play, see [here](INSTRUCTIONS.md)
  - This game has 3 levels
-   - Easy (2 Numbers, 5 lives)
-   - Medium (3 Numbers, 5 lives)
-   - Hard (4 Numbers, 6 lives)
+   - Easy (3 Numbers, 5 lives)
+   - Medium (4 Numbers, 5 lives)
+   - Hard (5 Numbers, 6 lives)
  - Bull overrides cow.
    - Eg: If the correct number is 4864 and you enter 7104, you will get a bull at the last position, and no cow anywhere
  - Correct answer is displayed in case you lose
@@ -31,7 +31,7 @@ Sugar Activity of the classic "CowBulls" game, with a slight twist ;)
  - Icons borrowed from multiple authors via [FlatIcon](https://www.flaticon.com)
 
 ### Screenshots:
- - Game won (Level: difficult)
+ - Game won (Level: Medium)
  ![Won difficult](screenshots/en/1.jpg)
- - Game lost (Level: Medium)
+ - Game lost (Level: Easy)
  ![Lost medium](screenshots/en/2.jpg)
