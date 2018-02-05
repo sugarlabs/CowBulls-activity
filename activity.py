@@ -43,9 +43,9 @@ class CowBullsActivtiy(activity.Activity):
         toolbox.toolbar.insert(activity_button, 0)
         activity_button.show()
 
-        restart = ToolButton('restart')
+        restart = ToolButton('media-playback-start')
         toolbox.toolbar.insert(restart, -1)
-        restart.set_tooltip(_('Reset'))
+        restart.set_tooltip(_('Restart'))
         restart.connect('clicked', self._button_cb, 'restart')
         restart.set_sensitive(True)
         restart.show()
