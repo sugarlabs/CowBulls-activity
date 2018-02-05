@@ -3,6 +3,7 @@ Sugar Activity of the classic "CowBulls" game, with a slight twist ;)
 
 ### About:
  - This is a [sugar](https://sugarlabs.org/) activity
+ - For instructions on how to play, see [here](INSTRUCTIONS.md)
  - This game has 3 levels
    - Easy (2 Numbers, 5 lives)
    - Medium (3 Numbers, 5 lives)
