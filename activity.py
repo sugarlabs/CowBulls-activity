@@ -46,12 +46,6 @@ class CowBullsActivtiy(activity.Activity):
         toolbox.toolbar.insert(activity_button, 0)
         activity_button.show()
 
-        restart = ToolButton('media-playback-start')
-        toolbox.toolbar.insert(restart, -1)
-        restart.set_tooltip(_('Restart'))
-        restart.connect('clicked', self._restart_button_cb)
-        restart.show()
-
         comboLabel = Gtk.ToolItem()
         label1 = Gtk.Label()
         label1.set_text(_('Level:') + ' ')
@@ -74,6 +68,12 @@ class CowBullsActivtiy(activity.Activity):
         separator.set_expand(False)
         toolbox.toolbar.insert(separator, -1)
         separator.show()
+
+        restart = ToolButton('media-playback-start')
+        toolbox.toolbar.insert(restart, -1)
+        restart.set_tooltip(_('Restart'))
+        restart.connect('clicked', self._restart_button_cb)
+        restart.show()
 
         next_bt = ToolButton('next')
         toolbox.toolbar.insert(next_bt, -1)
