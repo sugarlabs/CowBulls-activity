@@ -224,11 +224,11 @@ class CowBulls:
             pygame.display.update()
 
     def restart(self):
-        g.screen.fill((0,0,0))
+        g.screen.fill((0, 0, 0))
         self.change_level(self.level)
 
     def change_level(self, level):
-        g.screen.fill((0,0,0))
+        g.screen.fill((0, 0, 0))
         self.level = level
         self.journal = True  # set to False if we come in via main()
         self.num = [int(x) for x in str(utils.get_random(level))]
@@ -241,7 +241,7 @@ class CowBulls:
         self.parent.update_score(self.score)
 
     def nextRound(self):
-        g.screen.fill((0,0,0))
+        g.screen.fill((0, 0, 0))
         self.next_button.set_sensitive(False)
         self.journal = True  # set to False if we come in via main()
         self.num = [int(x) for x in str(utils.get_random(self.level))]
