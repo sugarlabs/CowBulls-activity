@@ -28,7 +28,7 @@ import utils
 
 
 class CowBulls:
-    def __init__(self, level=3, parent = None):
+    def __init__(self, level=3, parent=None):
         self.parent = parent
         self.level = level
         self.journal = True  # set to False if we come in via main()
@@ -248,6 +248,7 @@ class CowBulls:
         self.attempts_list = []
         self.compare_list = []
         self.run()
+
 
 if __name__ == "__main__":
     pygame.init()

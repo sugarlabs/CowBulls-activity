@@ -116,7 +116,7 @@ class CowBullsActivtiy(activity.Activity):
         self.show_all()
 
         # Create the game instance.
-        self.game = CowBulls.CowBulls(parent = self)
+        self.game = CowBulls.CowBulls(parent=self)
 
         # Build the Pygame canvas.
         self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(
@@ -186,7 +186,7 @@ class CowBullsActivtiy(activity.Activity):
 
     def _restart_button_cb(self, event):
         self.game.restart()
-    
+
     def _next_button_cb(self, event):
         self.game.nextRound()
         self.next_bt.set_sensitive(False)
