@@ -10,7 +10,7 @@ def init():
     global redraw, screen, images
     global scale, w, h, pointer, pos
     global INPUT_SIZE, DISP_SIZE, DIALPAD
-    global ATTEMPTS, XGAP, DKP
+    global ATTEMPT, XGAP, DKP
 
     redraw = True
     for root, subdirs, files in os.walk('data'):
@@ -32,7 +32,7 @@ def init():
     DISP_SIZE = 55 * scale
     XGAP = (10 + INPUT_SIZE) * scale
     DKP = (10 + DISP_SIZE) * scale
-    ATTEMPTS = (60 * scale, 25 * scale)
+    ATTEMPT = (60 * scale, 25 * scale)
     DIALPAD = (900 * scale, 200 * scale)
 
 

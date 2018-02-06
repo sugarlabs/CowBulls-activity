@@ -101,8 +101,6 @@ class CowBullsActivtiy(activity.Activity):
         Gdk.Screen.get_default().connect('size-changed',
                                          self.__configure_cb)
 
-        self.game.set_restart_button(restart)
-
     def change_combo(self, combo):
         level = combo.get_active()
         self.game.change_level(int(level) + 3)
