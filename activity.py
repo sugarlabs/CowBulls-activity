@@ -15,6 +15,7 @@ from gettext import gettext as _
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
+
 from gi.repository import Gtk
 from gi.repository import Gdk
 
@@ -34,6 +35,7 @@ class CowBullsActivtiy(activity.Activity):
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
 
+        # No sharing (Future Improvement)
         self.max_participants = 1
 
         # Build the activity toolbar.
@@ -46,8 +48,7 @@ class CowBullsActivtiy(activity.Activity):
         restart = ToolButton('media-playback-start')
         toolbox.toolbar.insert(restart, -1)
         restart.set_tooltip(_('Restart'))
-        restart.connect('clicked', self._button_cb, 'restart')
-        restart.set_sensitive(True)
+        restart.connect('clicked', self._restart_button_cb)
         restart.show()
 
         separator = Gtk.SeparatorToolItem()
@@ -58,16 +59,15 @@ class CowBullsActivtiy(activity.Activity):
 
         comboLabel = Gtk.ToolItem()
         label1 = Gtk.Label()
-        label1.set_text(_('Levels') + ' ')
+        label1.set_text(_('Level:') + ' ')
         comboLabel.add(label1)
         toolbox.toolbar.insert(comboLabel, -1)
 
-        comboField = Gtk.ToolItem()
-
         levels = (_('Easy'),
-                  _('Medium'),
+                  _('Moderate'),
                   _('Hard'))
 
+        comboField = Gtk.ToolItem()
         combo = Combo(levels)
         comboField.add(combo)
         combo.connect('changed', self.change_combo)
@@ -86,12 +86,10 @@ class CowBullsActivtiy(activity.Activity):
 
         toolbox.show()
         self.set_toolbar_box(toolbox)
-
-        self._toolbar = toolbox.toolbar
         self.show_all()
 
         # Create the game instance.
-        self.game = CowBulls.CowBulls(3)
+        self.game = CowBulls.CowBulls()
 
         # Build the Pygame canvas.
         self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(
@@ -100,9 +98,9 @@ class CowBullsActivtiy(activity.Activity):
         # Note that set_canvas implicitly calls
         # read_file when resuming from the Journal.
         self.set_canvas(self._pygamecanvas)
-
         Gdk.Screen.get_default().connect('size-changed',
                                          self.__configure_cb)
+
         self.game.set_restart_button(restart)
 
     def change_combo(self, combo):
@@ -117,27 +115,23 @@ class CowBullsActivtiy(activity.Activity):
         pygame.display.set_mode((Gdk.Screen.width(),
                                  Gdk.Screen.height() - GRID_CELL_SIZE),
                                 pygame.RESIZABLE)
-        self.game.save_pattern()
         self.game.g_init()
-        self._speed_range.set_value(200)
-        self.game.run(restore=True)
+        self.game.run()
 
-    def _button_cb(self, button=None, color=None):
+    def _restart_button_cb(self, event):
         self.game.restart()
 
 
 class Combo(Gtk.ComboBox):
-    def __init__(self, options):
+    def __init__(self, levels):
 
         self.liststore = Gtk.ListStore(str)
-
-        for o in options:
-            self.liststore.append([o])
+        for level in levels:
+            self.liststore.append([level])
 
         Gtk.ComboBox.__init__(self)
         self.set_model(self.liststore)
         cell = Gtk.CellRendererText()
         self.pack_start(cell, True)
         self.add_attribute(cell, 'text', 0)
-
         self.set_active(0)
