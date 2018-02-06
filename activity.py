@@ -189,7 +189,6 @@ class CowBullsActivtiy(activity.Activity):
 
     def _next_button_cb(self, event):
         self.game.nextRound()
-        self.next_bt.set_sensitive(False)
 
 
 class Combo(Gtk.ComboBox):
