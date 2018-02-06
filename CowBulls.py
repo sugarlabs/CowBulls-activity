@@ -28,15 +28,18 @@ import utils
 
 
 class CowBulls:
-    def __init__(self, level=3):
+    def __init__(self, level=3, parent = None):
+        self.parent = parent
+        self.level = level
         self.journal = True  # set to False if we come in via main()
         self.num = [int(x) for x in str(utils.get_random(level))]
-        self.level = level
         self.lives, self.offset = utils.get_lives(self.level)
-        self.input = []
         self.status = None
+        self.input = []
         self.compare_list = []
         self.attempts_list = []
+        self.score = 0
+        self.parent.update_score(self.score)
 
     def display(self):
         g.screen.fill(g.BG_COLOR)
@@ -78,6 +81,16 @@ class CowBulls:
 
     def g_init(self):
         g.init()
+
+    def do_key(self, event):
+        value = utils.get_input(event.key)
+        if value:
+            if len(self.input) < self.level:
+                self.input.append(int(value))
+        elif event.key == pygame.K_BACKSPACE:
+            self.delete()
+        elif event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
+            self.enter()
 
     def do_button(self, pos):
         pos = (int((pos[0] - g.DIALPAD[0]) / g.XGAP)
@@ -139,9 +152,16 @@ class CowBulls:
             self.attempts_list.append(self.input)
             if self.input == self.num:
                 self.status = 'won'
+                self.next_button.set_sensitive(True)
+                self.score += (self.lives - len(self.attempts_list)) + 1
+                if self.parent:
+                    self.parent.update_score(self.score)
             elif len(self.attempts_list) == self.lives:
                 self.status = 'lost'
             self.input = []
+
+    def set_next_button(self, next_bt):
+        self.next_button = next_bt
 
     def flush_queue(self):
         flushing = True
@@ -183,20 +203,13 @@ class CowBulls:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if not self.status:
                         self.do_button(event.pos)
-                    g.redraw = True
+                        g.redraw = True
                     self.flush_queue()
 
                 elif event.type == pygame.KEYDOWN:
                     if not self.status:
-                        value = utils.get_input(event.key)
-                        if value:
-                            if len(self.input) < self.level:
-                                self.input.append(int(value))
-                        elif event.key == pygame.K_BACKSPACE:
-                            self.delete()
-                        elif event.key in [pygame.K_RETURN, pygame.K_KP_ENTER]:
-                            self.enter()
-                    g.redraw = True
+                        self.do_key(event)
+                        g.redraw = True
                     self.flush_queue()
 
                 elif event.type == pygame.QUIT:
@@ -214,16 +227,27 @@ class CowBulls:
         self.change_level(self.level)
 
     def change_level(self, level):
+        self.level = level
         self.journal = True  # set to False if we come in via main()
         self.num = [int(x) for x in str(utils.get_random(level))]
-        self.level = level
         self.lives, self.offset = utils.get_lives(self.level)
-        self.input = []
         self.status = None
+        self.input = []
+        self.attempts_list = []
+        self.compare_list = []
+        self.score = 0
+        self.parent.update_score(self.score)
+        self.run()
+
+    def nextRound(self):
+        self.journal = True  # set to False if we come in via main()
+        self.num = [int(x) for x in str(utils.get_random(self.level))]
+        self.lives, self.offset = utils.get_lives(self.level)
+        self.status = None
+        self.input = []
         self.attempts_list = []
         self.compare_list = []
         self.run()
-
 
 if __name__ == "__main__":
     pygame.init()

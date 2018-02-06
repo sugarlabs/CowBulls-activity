@@ -18,6 +18,7 @@ gi.require_version('Gdk', '3.0')
 
 from gi.repository import Gtk
 from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
@@ -51,12 +52,6 @@ class CowBullsActivtiy(activity.Activity):
         restart.connect('clicked', self._restart_button_cb)
         restart.show()
 
-        separator = Gtk.SeparatorToolItem()
-        separator.props.draw = True
-        separator.set_expand(False)
-        toolbox.toolbar.insert(separator, -1)
-        separator.show()
-
         comboLabel = Gtk.ToolItem()
         label1 = Gtk.Label()
         label1.set_text(_('Level:') + ' ')
@@ -72,12 +67,44 @@ class CowBullsActivtiy(activity.Activity):
         comboField.add(combo)
         combo.connect('changed', self.change_combo)
         toolbox.toolbar.insert(comboField, -1)
+        comboField.show()
 
         separator = Gtk.SeparatorToolItem()
-        separator.props.draw = False
-        separator.set_expand(True)
+        separator.props.draw = True
+        separator.set_expand(False)
         toolbox.toolbar.insert(separator, -1)
         separator.show()
+
+        next_bt = ToolButton('next')
+        toolbox.toolbar.insert(next_bt, -1)
+        next_bt.set_tooltip(_('Next Number'))
+        next_bt.connect('clicked', self._next_button_cb)
+        next_bt.set_sensitive(False)
+        next_bt.show()
+
+        separator2 = Gtk.SeparatorToolItem()
+        separator2.props.draw = True
+        separator2.set_expand(False)
+        toolbox.toolbar.insert(separator2, -1)
+        separator2.show()
+
+        comboLabel = Gtk.ToolItem()
+        label1 = Gtk.Label()
+        label1.set_text(_('Score:') + '  ')
+        comboLabel.add(label1)
+        toolbox.toolbar.insert(comboLabel, -1)
+
+        self._score_image = Gtk.Image()
+        item = Gtk.ToolItem()
+        item.add(self._score_image)
+        toolbox.toolbar.insert(item, -1)
+        item.show()
+
+        separator2 = Gtk.SeparatorToolItem()
+        separator2.props.draw = False
+        separator2.set_expand(True)
+        toolbox.toolbar.insert(separator2, -1)
+        separator2.show()
 
         stop_button = StopButton(self)
         stop_button.props.accelerator = _('<Ctrl>Q')
@@ -89,7 +116,7 @@ class CowBullsActivtiy(activity.Activity):
         self.show_all()
 
         # Create the game instance.
-        self.game = CowBulls.CowBulls()
+        self.game = CowBulls.CowBulls(parent = self)
 
         # Build the Pygame canvas.
         self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(
@@ -97,6 +124,7 @@ class CowBullsActivtiy(activity.Activity):
 
         # Note that set_canvas implicitly calls
         # read_file when resuming from the Journal.
+        self.game.set_next_button(next_bt)
         self.set_canvas(self._pygamecanvas)
         Gdk.Screen.get_default().connect('size-changed',
                                          self.__configure_cb)
@@ -116,8 +144,52 @@ class CowBullsActivtiy(activity.Activity):
         self.game.g_init()
         self.game.run()
 
+    def update_score(self, score):
+        pixbuf = self._svg_str_to_pixbuf(self._score_icon(score))
+        self._score_image.set_from_pixbuf(pixbuf)
+        self._score_image.show()
+
+    def _svg_str_to_pixbuf(self, svg_string):
+        ''' Load pixbuf from SVG string '''
+        pl = GdkPixbuf.PixbufLoader.new_with_type('svg')
+        pl.write(svg_string)
+        pl.close()
+        pixbuf = pl.get_pixbuf()
+        return pixbuf
+
+    def _score_icon(self, score):
+        return \
+            '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n' + \
+            '<svg\n' + \
+            'xmlns:dc="http://purl.org/dc/elements/1.1/"\n' + \
+            'xmlns:cc="http://creativecommons.org/ns#"\n' + \
+            'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n' + \
+            'xmlns:svg="http://www.w3.org/2000/svg"\n' + \
+            'xmlns="http://www.w3.org/2000/svg"\n' + \
+            'version="1.1"\n' + \
+            'width="55"\n' + \
+            'height="55"\n' + \
+            'viewBox="0 0 55 55">\n' + \
+            '<path\n' + \
+            'd="M 27.497,50.004 C 39.927,50.004 50,39.937 50,27.508 50,'\
+            '15.076 39.927,4.997 27.497,4.997 15.071,4.997 5,15.076 5,27.508 '\
+            '5,39.937 15.071,50.004 27.497,50.004 z"\n' + \
+            'style="fill:#ffffff;fill-opacity:1" /><text\n' + \
+            'style="fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">'\
+            '<tspan\n' + \
+            'x="27.5"\n' + \
+            'y="37.3"\n' + \
+            'style="font-size:24px;text-align:center;text-anchor:middle">'\
+            '%d' % score + \
+            '</tspan></text>\n' + \
+            '</svg>'
+
     def _restart_button_cb(self, event):
         self.game.restart()
+    
+    def _next_button_cb(self, event):
+        self.game.nextRound()
+        self.next_bt.set_sensitive(False)
 
 
 class Combo(Gtk.ComboBox):
