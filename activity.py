@@ -25,6 +25,7 @@ from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.activity.widgets import ActivityToolbarButton, StopButton
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.style import GRID_CELL_SIZE
+from sugar3 import profile
 
 import pygame
 import sugargame.canvas
@@ -35,6 +36,14 @@ class CowBullsActivtiy(activity.Activity):
 
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
+
+        self._sugarcolors = profile.get_color().to_string().split(',')
+        colors = [[int(self._sugarcolors[0][1:3], 16),
+                   int(self._sugarcolors[0][3:5], 16),
+                   int(self._sugarcolors[0][5:7], 16)],
+                  [int(self._sugarcolors[1][1:3], 16),
+                   int(self._sugarcolors[1][3:5], 16),
+                   int(self._sugarcolors[1][5:7], 16)]]
 
         # No sharing (Future Improvement)
         self.max_participants = 1
@@ -116,7 +125,7 @@ class CowBullsActivtiy(activity.Activity):
         self.show_all()
 
         # Create the game instance.
-        self.game = CowBulls.CowBulls(parent=self)
+        self.game = CowBulls.CowBulls(parent=self, colors=colors)
 
         # Build the Pygame canvas.
         self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(

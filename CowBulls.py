@@ -28,11 +28,12 @@ import utils
 
 
 class CowBulls:
-    def __init__(self, level=3, parent=None):
+    def __init__(self, level=3, parent=None, colors=None):
+        self.colors = colors
         self.parent = parent
         self.level = level
         self.journal = True  # set to False if we come in via main()
-        self.num = [int(x) for x in str(utils.get_random(level))]
+        self.num = utils.get_num(self.level)
         self.lives, self.offset = utils.get_lives(self.level)
         self.status = None
         self.input = []
@@ -42,12 +43,13 @@ class CowBulls:
         self.parent.update_score(self.score)
 
     def display(self):
-        g.screen.fill(g.BG_COLOR)
+        g.screen.fill(self.colors[1])
         for x in range(3):
             for y in range(4):
+                utils.blit_offset('dialpad/no-glow',
+                                  g.DIALPAD, (x, y))
                 utils.blit_offset('dialpad/' + str(1 + x + 3 * y),
                                   g.DIALPAD, (x, y))
-
         for x in range(int(self.level)):
             utils.blit_offset('entries/entry-small',
                               (g.ATTEMPT[0], g.ATTEMPT[1] + g.DISP_SIZE),
@@ -59,6 +61,8 @@ class CowBulls:
                               (x + self.offset, -0.7))
 
         for x in range(len(self.input)):
+            utils.blit_offset('dialpad/no-glow', g.DIALPAD,
+                              (self.offset + x, -1.6))
             utils.blit_offset('dialpad/' + str(self.input[x]), g.DIALPAD,
                               (self.offset + x, -1.6))
 
@@ -231,7 +235,7 @@ class CowBulls:
         g.screen.fill((0, 0, 0))
         self.level = level
         self.journal = True  # set to False if we come in via main()
-        self.num = [int(x) for x in str(utils.get_random(level))]
+        self.num = utils.get_num(self.level)
         self.lives, self.offset = utils.get_lives(self.level)
         self.status = None
         self.input = []
@@ -244,7 +248,7 @@ class CowBulls:
         g.screen.fill((0, 0, 0))
         self.next_button.set_sensitive(False)
         self.journal = True  # set to False if we come in via main()
-        self.num = [int(x) for x in str(utils.get_random(self.level))]
+        self.num = utils.get_num(self.level)
         self.lives, self.offset = utils.get_lives(self.level)
         self.status = None
         self.input = []

@@ -38,9 +38,19 @@ Numbers = {
 
 levels = {
     3: (5, 0),
-    4: (5, -0.5),
-    5: (6, -1)
+    4: (6, -0.5),
+    5: (7, -1)
 }
+
+
+def get_num(level):
+    num = [0]
+    while num[0] == 0:
+        if level == 3:
+                num = random.sample(range(0, 10), 3)
+        else:
+            num = [random.choice(range(0, 10)) for x in range(level)]
+    return num
 
 
 def get_input(key):
@@ -72,9 +82,3 @@ def get_lives(level):
         return levels[level]
     else:
         return (0, 0)
-
-
-def get_random(level):
-    start = 10**(level - 1)
-    end = 10**level - 1
-    return random.randint(start, end)
