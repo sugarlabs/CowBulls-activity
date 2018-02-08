@@ -19,7 +19,6 @@ def init():
 
     screen = pygame.display.get_surface()
     pygame.display.set_caption(app)
-    screen.fill(BG_COLOR)
     pygame.display.flip()
     w, h = screen.get_size()
     scale = min([w / 1200.0, h / 700.0])

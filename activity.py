@@ -38,12 +38,9 @@ class CowBullsActivtiy(activity.Activity):
         activity.Activity.__init__(self, handle)
 
         self._sugarcolors = profile.get_color().to_string().split(',')
-        colors = [[int(self._sugarcolors[0][1:3], 16),
-                   int(self._sugarcolors[0][3:5], 16),
-                   int(self._sugarcolors[0][5:7], 16)],
-                  [int(self._sugarcolors[1][1:3], 16),
-                   int(self._sugarcolors[1][3:5], 16),
-                   int(self._sugarcolors[1][5:7], 16)]]
+        colors = [int(self._sugarcolors[0][1:3], 16),
+                  int(self._sugarcolors[0][3:5], 16),
+                  int(self._sugarcolors[0][5:7], 16)]
 
         # No sharing (Future Improvement)
         self.max_participants = 1

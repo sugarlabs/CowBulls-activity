@@ -43,7 +43,7 @@ class CowBulls:
         self.parent.update_score(self.score)
 
     def display(self):
-        g.screen.fill(self.colors[1])
+        g.screen.fill(g.BG_COLOR)
         for x in range(3):
             for y in range(4):
                 utils.blit_offset('dialpad/no-glow',
