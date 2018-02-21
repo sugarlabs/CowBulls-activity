@@ -36,12 +36,6 @@ class CowBullsActivtiy(activity.Activity):
 
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
-
-        self._sugarcolors = profile.get_color().to_string().split(',')
-        colors = [int(self._sugarcolors[0][1:3], 16),
-                  int(self._sugarcolors[0][3:5], 16),
-                  int(self._sugarcolors[0][5:7], 16)]
-
         # No sharing (Future Improvement)
         self.max_participants = 1
 
@@ -122,7 +116,7 @@ class CowBullsActivtiy(activity.Activity):
         self.show_all()
 
         # Create the game instance.
-        self.game = CowBulls.CowBulls(parent=self, colors=colors)
+        self.game = CowBulls.CowBulls(parent=self)
 
         # Build the Pygame canvas.
         self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(

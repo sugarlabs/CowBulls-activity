@@ -28,8 +28,7 @@ import utils
 
 
 class CowBulls:
-    def __init__(self, level=3, parent=None, colors=None):
-        self.colors = colors
+    def __init__(self, level=3, parent=None):
         self.parent = parent
         self.level = level
         self.journal = True  # set to False if we come in via main()
@@ -77,6 +76,10 @@ class CowBulls:
 
     def result(self):
         if self.status:
+            self.alphasurface = pygame.Surface((g.w, g.h))
+            self.alphasurface.fill((100, 100, 100))
+            self.alphasurface.set_alpha(200)
+            g.screen.blit(self.alphasurface, pygame.Rect(0, 0, g.w, g.h))
             utils.load_blit(self.status, (g.w / 2, g.h / 2 - (128 * g.scale)))
 
     def delete(self):
