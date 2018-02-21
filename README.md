@@ -5,9 +5,9 @@ Sugar Activity of the classic "CowBulls" game, with a slight twist ;)
  - This is a [sugar](https://sugarlabs.org/) activity
  - For instructions on how to play, see [here](INSTRUCTIONS.md)
  - This game has 3 levels
-   - Easy (3 Numbers, 5 lives)
-   - Medium (4 Numbers, 5 lives)
-   - Hard (5 Numbers, 6 lives)
+   - Easy (3 digits, 5 lives)
+   - Medium (4 digits, 5 lives)
+   - Hard (5 digits, 6 lives)
  - Bull overrides cow.
    - Eg: If the correct number is 4864 and you enter 7104, you will get a bull at the last position, and no cow anywhere
  - Correct answer is displayed in case you lose
@@ -21,16 +21,18 @@ Sugar Activity of the classic "CowBulls" game, with a slight twist ;)
 
 ### Further Improvements:
  - Option for a two-player shared activity, where one user chooses a number and the other guesses it.
+   [In priority]
  - Can have numbers coming up until the player loses (A scoring based system, which also saves the high score)
-   [IMPLEMENTED in fd2a79]
+   [Implemented in fd2a792]
  - Should have descriptive text at some places in the activity(Depends on initial response of testing)
+   [No, as of now]
 
 ### Notes:
  - Uses [sugargame](https://github.com/sugarlabs/sugargame) v1.2
- - Adjustable to all Screen sizes
+ - Adjusts itself to the screen size
 
 ### Known Bugs:
- - Numpad keys 3 and 5 aren't detected.
+ - Numpad keys 3, 5 and 0 aren't detected.<br>
    Log: `Key KP_Next unrecognised`
 
 ### Credits:
@@ -38,7 +40,7 @@ Sugar Activity of the classic "CowBulls" game, with a slight twist ;)
  - Icons borrowed from multiple authors via [FlatIcon](https://www.flaticon.com)
 
 ### Screenshots:
- - Game won (Level: Medium)
- ![Won difficult](screenshots/en/1.jpg)
- - Game lost (Level: Easy)
- ![Lost medium](screenshots/en/2.jpg)
+ - Round in progress (Level: Easy)
+ ![Round in progress](screenshots/en/1.jpg)
+ - Round won (Level: Easy)
+ ![Round won](screenshots/en/2.jpg)
