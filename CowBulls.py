@@ -65,9 +65,9 @@ class CowBulls:
             utils.blit_offset('dialpad/' + str(self.input[x]), g.DIALPAD,
                               (self.offset + x, -1.6))
 
-        utils.blit_offset('lives/lives', g.DIALPAD, (0, 5))
+        utils.blit_offset('lives/lives', g.DIALPAD, (0, 4.5))
         utils.blit_offset('lives/' + str(self.lives -
-                          len(self.attempts_list)), g.DIALPAD, (1, 5))
+                          len(self.attempts_list)), g.DIALPAD, (1, 4.5))
         self.highlight()
         self.result()
         self.attempt_disp()

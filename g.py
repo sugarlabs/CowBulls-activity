@@ -22,17 +22,20 @@ def init():
     pygame.display.flip()
     w, h = screen.get_size()
     scale = min([w / 1200.0, h / 700.0])
+    X_INIT = (w - 1200 * scale)/2
+    Y_INIT = (h - 700 * scale)/2
 
     pos = pygame.mouse.get_pos()
     pointer = images['data/pointer.png']
     pygame.mouse.set_visible(False)
-
+    MARGIN = 10 * scale
     INPUT_SIZE = 75 * scale
     DISP_SIZE = 55 * scale
-    XGAP = (10 + INPUT_SIZE) * scale
-    DKP = (10 + DISP_SIZE) * scale
-    ATTEMPT = (60 * scale, 25 * scale)
-    DIALPAD = (900 * scale, 200 * scale)
+    XGAP = MARGIN + INPUT_SIZE
+    DKP = MARGIN + DISP_SIZE
+
+    ATTEMPT = (X_INIT + 60 * scale, Y_INIT + 25 * scale)
+    DIALPAD = (X_INIT + 900 * scale, Y_INIT + 200 * scale)
 
 
 def load_image(file_path):
