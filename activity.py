@@ -23,6 +23,7 @@ from gi.repository import GdkPixbuf
 from sugar3.activity import activity
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.activity.widgets import ActivityToolbarButton, StopButton
+from sugar3.graphics.combobox import ComboBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.style import GRID_CELL_SIZE
 from sugar3 import profile
@@ -52,12 +53,12 @@ class CowBullsActivtiy(activity.Activity):
         comboLabel.add(label1)
         toolbox.toolbar.insert(comboLabel, -1)
 
-        levels = (_('Easy'),
-                  _('Moderate'),
-                  _('Hard'))
-
         comboField = Gtk.ToolItem()
-        combo = Combo(levels)
+        combo = ComboBox()
+        combo.append_item(0, _('Easy'))
+        combo.append_item(1, _('Moderate'))
+        combo.append_item(2, _('Hard'))
+        combo.set_active(0)
         comboField.add(combo)
         combo.connect('changed', self.change_combo)
         toolbox.toolbar.insert(comboField, -1)
@@ -130,7 +131,7 @@ class CowBullsActivtiy(activity.Activity):
                                          self.__configure_cb)
 
     def change_combo(self, combo):
-        level = combo.get_active()
+        level = combo.get_value()
         self.game.change_level(int(level) + 3)
 
     def get_preview(self):
@@ -189,18 +190,3 @@ class CowBullsActivtiy(activity.Activity):
 
     def _next_button_cb(self, event):
         self.game.nextRound()
-
-
-class Combo(Gtk.ComboBox):
-    def __init__(self, levels):
-
-        self.liststore = Gtk.ListStore(str)
-        for level in levels:
-            self.liststore.append([level])
-
-        Gtk.ComboBox.__init__(self)
-        self.set_model(self.liststore)
-        cell = Gtk.CellRendererText()
-        self.pack_start(cell, True)
-        self.add_attribute(cell, 'text', 0)
-        self.set_active(0)
