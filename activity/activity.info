@@ -1,6 +1,6 @@
 [Activity]
 name = CowBulls
-activity_version = 1
+activity_version = 2
 host_version = 1
 bundle_id = org.laptop.community.CowBulls
 icon = activity
