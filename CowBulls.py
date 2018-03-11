@@ -246,6 +246,7 @@ class CowBulls:
         self.compare_list = []
         self.score = 0
         self.parent.update_score(self.score)
+        self.next_button.set_sensitive(False)
 
     def nextRound(self):
         g.screen.fill((0, 0, 0))
