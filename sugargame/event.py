@@ -1,6 +1,6 @@
 import logging
+from gi.repository import GLib
 from gi.repository import Gdk
-from gi.repository import GObject
 import pygame
 import pygame.event
 
@@ -28,6 +28,8 @@ class Translator(object):
         'KP_Down': pygame.K_KP2,
         'KP_Left': pygame.K_KP4,
         'KP_Right': pygame.K_KP6,
+        'KP_Next': pygame.K_KP3,
+        'KP_Begin': pygame.K_KP5,
 
     }
 
@@ -139,7 +141,7 @@ class Translator(object):
 
     def _keymods(self):
         mod = 0
-        for key_val, mod_val in self.mod_map.iteritems():
+        for key_val, mod_val in self.mod_map.items():
             mod |= self.__keystate[key_val] and mod_val
         return mod
 
@@ -168,7 +170,7 @@ class Translator(object):
             self.__keystate[keycode] = type == pygame.KEYDOWN
             if type == pygame.KEYUP:
                 mod = self._keymods()
-            ukey = unichr(Gdk.keyval_to_unicode(event.keyval))
+            ukey = chr(Gdk.keyval_to_unicode(event.keyval))
             if ukey == '\000':
                 ukey = ''
             evt = pygame.event.Event(type, key=keycode, unicode=ukey, mod=mod)
@@ -237,9 +239,9 @@ class Translator(object):
 
     def _set_repeat(self, delay=None, interval=None):
         if delay is not None and self.__repeat[0] is None:
-            self.__tick_id = GObject.timeout_add(10, self._tick_cb)
+            self.__tick_id = GLib.timeout_add(10, self._tick_cb)
         elif delay is None and self.__repeat[0] is not None:
-            GObject.source_remove(self.__tick_id)
+            GLib.source_remove(self.__tick_id)
         self.__repeat = (delay, interval)
 
     def _get_mouse_pos(self):

@@ -1,18 +1,16 @@
 import os
 from gi.repository import Gtk
-from gi.repository import GObject
 from gi.repository import GLib
 from sugar3.activity.activity import PREVIEW_SIZE
 import pygame
-import event
+import sugargame.event as event
 
 CANVAS = None
 
 
 class PygameCanvas(Gtk.EventBox):
-    def __init__(self, activity, pointer_hint=True,
-                 main=None, modules=[pygame]):
-        GObject.GObject.__init__(self)
+    def __init__(self, activity, main=None, modules=[pygame]):
+        Gtk.EventBox.__init__(self)
 
         global CANVAS
         assert CANVAS is None, "Only one PygameCanvas can be created, ever."
@@ -78,7 +76,7 @@ class PygameCanvas(Gtk.EventBox):
         _surface = pygame.transform.scale(self._screen, (width, height))
         pygame.image.save(_surface, _file_path)
 
-        f = open(_file_path, 'r')
+        f = open(_file_path, 'rb')
         preview = f.read()
         f.close()
         os.remove(_file_path)
