@@ -108,9 +108,9 @@ class CowBullsActivtiy(activity.Activity):
         separator2.show()
 
         stop_button = StopButton(self)
-        stop_button.props.accelerator = _('<Ctrl>Q')
         toolbox.toolbar.insert(stop_button, -1)
         stop_button.show()
+        stop_button.connect('clicked', self._stop_cb)
 
         toolbox.show()
         self.set_toolbar_box(toolbox)
@@ -129,6 +129,9 @@ class CowBullsActivtiy(activity.Activity):
         self.set_canvas(self._pygamecanvas)
         Gdk.Screen.get_default().connect('size-changed',
                                          self.__configure_cb)
+
+    def _stop_cb(self, button):
+        self.game.going = False
 
     def change_combo(self, combo):
         level = combo.get_value()

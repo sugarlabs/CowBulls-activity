@@ -40,6 +40,7 @@ class CowBulls:
         self.attempts_list = []
         self.score = 0
         self.parent.update_score(self.score)
+        self.going = True
 
     def display(self):
         g.screen.fill(g.BG_COLOR)
@@ -193,12 +194,14 @@ class CowBulls:
         self.display()
         if self.canvas is not None:
             self.canvas.grab_focus()
-        going = True
-        while going:
+
+        while self.going:
             # Pump Gtk messages.
             if self.journal:
                 while Gtk.events_pending():
                     Gtk.main_iteration()
+                if not self.going:
+                    break
 
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEMOTION:
@@ -220,7 +223,7 @@ class CowBulls:
                     self.flush_queue()
 
                 elif event.type == pygame.QUIT:
-                    going = False
+                    return
 
             if g.redraw:
                 self.display()
