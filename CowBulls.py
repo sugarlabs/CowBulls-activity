@@ -248,9 +248,9 @@ class CowBulls:
         self.score = 0
         self.parent.update_score(self.score)
         self.next_button.set_sensitive(False)
+        g.redraw = True
 
     def nextRound(self):
-        g.screen.fill((0, 0, 0))
         self.next_button.set_sensitive(False)
         self.journal = True  # set to False if we come in via main()
         self.num = utils.get_num(self.level)
@@ -259,6 +259,7 @@ class CowBulls:
         self.input = []
         self.attempts_list = []
         self.compare_list = []
+        g.redraw = True
 
 
 if __name__ == "__main__":
