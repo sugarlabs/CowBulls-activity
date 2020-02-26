@@ -234,11 +234,9 @@ class CowBulls:
             pygame.display.update()
 
     def restart(self):
-        g.screen.fill((0, 0, 0))
         self.change_level(self.level)
 
     def change_level(self, level):
-        g.screen.fill((0, 0, 0))
         self.level = level
         self.journal = True  # set to False if we come in via main()
         self.num = utils.get_num(self.level)
