@@ -70,7 +70,7 @@ class CowBullsActivtiy(activity.Activity):
         toolbox.toolbar.insert(separator, -1)
         separator.show()
 
-        restart = ToolButton('media-playback-start')
+        restart = ToolButton('new-game')
         toolbox.toolbar.insert(restart, -1)
         restart.set_tooltip(_('Restart'))
         restart.connect('clicked', self._restart_button_cb)
