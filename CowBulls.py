@@ -41,6 +41,7 @@ class CowBulls:
         self.score = 0
         self.parent.update_score(self.score)
         self.going = True
+        self.clock = pygame.time.Clock()
 
     def display(self):
         g.screen.fill(g.BG_COLOR)
@@ -232,6 +233,7 @@ class CowBulls:
                 g.redraw = False
 
             pygame.display.update()
+            self.clock.tick(20) # Try to stay at 20 FPS
 
     def restart(self):
         self.change_level(self.level)
