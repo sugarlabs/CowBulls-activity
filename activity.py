@@ -42,16 +42,18 @@ class CowBullsActivtiy(activity.Activity):
 
         # Build the activity toolbar.
         toolbox = ToolbarBox()
-
+        
         activity_button = ActivityToolbarButton(self)
         toolbox.toolbar.insert(activity_button, 0)
         activity_button.show()
 
-        comboLabel = Gtk.ToolItem()
+        comboLabel1 = Gtk.ToolItem()
         label1 = Gtk.Label()
         label1.set_text(_('Level:') + ' ')
-        comboLabel.add(label1)
-        toolbox.toolbar.insert(comboLabel, -1)
+        comboLabel1.add(label1)
+        toolbox.toolbar.insert(comboLabel1, -1)
+        comboLabel1.show()
+        label1.show()
 
         comboField = Gtk.ToolItem()
         combo = ComboBox()
@@ -63,6 +65,7 @@ class CowBullsActivtiy(activity.Activity):
         combo.connect('changed', self.change_combo)
         toolbox.toolbar.insert(comboField, -1)
         comboField.show()
+        combo.show()
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = True
@@ -89,11 +92,13 @@ class CowBullsActivtiy(activity.Activity):
         toolbox.toolbar.insert(separator2, -1)
         separator2.show()
 
-        comboLabel = Gtk.ToolItem()
+        comboLabel2 = Gtk.ToolItem()
         label1 = Gtk.Label()
         label1.set_text(_('Score:') + '  ')
-        comboLabel.add(label1)
-        toolbox.toolbar.insert(comboLabel, -1)
+        comboLabel2.add(label1)
+        toolbox.toolbar.insert(comboLabel2, -1)
+        comboLabel2.show()
+        label1.show()
 
         self._score_image = Gtk.Image()
         item = Gtk.ToolItem()
@@ -114,7 +119,6 @@ class CowBullsActivtiy(activity.Activity):
 
         toolbox.show()
         self.set_toolbar_box(toolbox)
-        self.show_all()
 
         # Create the game instance.
         self.game = CowBulls.CowBulls(parent=self)

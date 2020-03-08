@@ -226,6 +226,12 @@ class CowBulls:
                 elif event.type == pygame.QUIT:
                     return
 
+                elif event.type == pygame.VIDEORESIZE:
+                    pygame.display.set_mode(
+                        (event.size[0], event.size[1] - GRID_CELL_SIZE),
+                        pygame.RESIZABLE)
+                    break
+
             if g.redraw:
                 self.display()
                 g.screen.blit(g.pointer, g.pos)
