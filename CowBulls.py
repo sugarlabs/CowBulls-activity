@@ -240,7 +240,7 @@ class CowBulls:
                 g.redraw = False
 
             pygame.display.update()
-            self.clock.tick(20) #  Try to stay at 20 FPS
+            self.clock.tick(20)  # Try to stay at 20 FPS
 
     def restart(self):
         self.change_level(self.level)
