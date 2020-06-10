@@ -230,6 +230,7 @@ class CowBulls:
                     pygame.display.set_mode(
                         (event.size[0], event.size[1] - GRID_CELL_SIZE),
                         pygame.RESIZABLE)
+                    g.redraw = True
                     break
 
             if g.redraw:
