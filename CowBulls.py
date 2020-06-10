@@ -272,7 +272,7 @@ class CowBulls:
 
 if __name__ == "__main__":
     pygame.init()
-    pygame.display.set_mode((1200, 700), pygame.FULLSCREEN)
+    pygame.display.set_mode((0,0), pygame.FULLSCREEN)
     game = CowBulls()
     game.journal = False
     game.run()
