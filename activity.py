@@ -57,6 +57,7 @@ class CowBullsActivtiy(activity.Activity):
 
         comboField = Gtk.ToolItem()
         combo = ComboBox()
+        combo.set_wrap_width(3)
         combo.append_item(0, _('Easy'))
         combo.append_item(1, _('Moderate'))
         combo.append_item(2, _('Hard'))
