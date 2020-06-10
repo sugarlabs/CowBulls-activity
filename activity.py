@@ -153,7 +153,7 @@ class CowBullsActivtiy(activity.Activity):
     def _svg_str_to_pixbuf(self, svg_string):
         ''' Load pixbuf from SVG string '''
         pl = GdkPixbuf.PixbufLoader.new_with_type('svg')
-        pl.write(svg_string)
+        pl.write(svg_string.encode())
         pl.close()
         pixbuf = pl.get_pixbuf()
         return pixbuf
