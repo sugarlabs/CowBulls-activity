@@ -26,7 +26,6 @@ from sugar3.activity.widgets import ActivityToolbarButton, StopButton
 from sugar3.graphics.combobox import ComboBox
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.style import GRID_CELL_SIZE
-from sugar3 import profile
 
 import pygame
 import sugargame.canvas
@@ -42,7 +41,7 @@ class CowBullsActivtiy(activity.Activity):
 
         # Build the activity toolbar.
         toolbox = ToolbarBox()
-        
+
         activity_button = ActivityToolbarButton(self)
         toolbox.toolbar.insert(activity_button, 0)
         activity_button.show()
@@ -181,10 +180,12 @@ class CowBullsActivtiy(activity.Activity):
             'viewBox="0 0 55 55">\n' + \
             '<path\n' + \
             'd="M 27.497,50.004 C 39.927,50.004 50,39.937 50,27.508 50,'\
-            '15.076 39.927,4.997 27.497,4.997 15.071,4.997 5,15.076 5,27.508 '\
+            '15.076 39.927,4.997 27.497,4.997 15.071,4.997 5, \
+                 15.076 5,27.508 '\
             '5,39.937 15.071,50.004 27.497,50.004 z"\n' + \
             'style="fill:#ffffff;fill-opacity:1" /><text\n' + \
-            'style="fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">'\
+            'style=" \
+                 fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">'\
             '<tspan\n' + \
             'x="27.5"\n' + \
             'y="37.3"\n' + \

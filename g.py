@@ -22,8 +22,8 @@ def init():
     pygame.display.flip()
     w, h = screen.get_size()
     scale = min([w / 1200.0, h / 900.0])
-    X_INIT = (w - 1200 * scale)/2
-    Y_INIT = (h - 900 * scale)/2
+    X_INIT = (w - 1200 * scale) / 2
+    Y_INIT = (h - 900 * scale) / 2
 
     pos = pygame.mouse.get_pos()
     pointer = images['data/pointer.png']
