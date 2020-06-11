@@ -74,7 +74,11 @@ def load_blit(file_path, pos):
     sizex, sizey = g.images[file_path].get_rect().size
     img = pygame.transform.smoothscale(
         g.images[file_path], (int(sizex * g.scale), int(sizey * g.scale)))
-    g.screen.blit(img, pos)
+    if file_path == 'data/won.png' or file_path == 'data/lost.png':
+        width = img.get_width()
+        g.screen.blit(img, (pos[0] - width / 2, pos[1]))
+    else:
+        g.screen.blit(img, pos)
 
 
 def get_lives(level):
