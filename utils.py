@@ -49,7 +49,7 @@ def get_num(level):
         if level == 3:
             num = random.sample(range(0, 10), 3)
         else:
-            num = [random.randint(range(0, 10)) for _ in range(level)]
+            num = [random.randint(0, 10) for _ in range(level)]
     return num
 
 
