@@ -102,11 +102,11 @@ class CowBulls:
             self.enter()
 
     def do_button(self, pos):
-        pos = (int((pos[0] - g.DIALPAD[0]) / g.XGAP)
-               ), int((pos[1] - g.DIALPAD[1]) / g.XGAP)
+        pos = (int((pos[0] - g.DIALPAD[0]) // g.XGAP)
+               ), int((pos[1] - g.DIALPAD[1]) // g.XGAP)
         num = 3 * pos[1] + pos[0] + 1
 
-        if pos[1] >= 0 and pos[0] >= 0:
+        if pos[1] >= 0 and pos[0] >= 0 and pos[0] < 3:
             if num in range(1, 10):
                 if len(self.input) < self.level:
                     self.input.append(num)
@@ -119,8 +119,8 @@ class CowBulls:
                 self.delete()
 
     def highlight(self):
-        pos = int((g.pos[0] - g.DIALPAD[0]) /
-                  g.XGAP), int((g.pos[1] - g.DIALPAD[1]) / g.XGAP)
+        pos = int((g.pos[0] - g.DIALPAD[0]) //
+                  g.XGAP), int((g.pos[1] - g.DIALPAD[1]) // g.XGAP)
 
         if pos[0] in range(3) and pos[1] in range(4):
             num = 3 * pos[1] + pos[0] + 1
