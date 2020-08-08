@@ -1,7 +1,6 @@
 [Activity]
 name = CowBulls
-activity_version = 2
-host_version = 1
+activity_version = 3
 bundle_id = org.laptop.community.CowBulls
 icon = activity
 show_launcher = yes
@@ -9,4 +8,4 @@ exec = sugar-activity3 activity.CowBullsActivtiy
 license = GPLv3+
 category = maths game
 summary = "CowBulls Math Puzzle game"
-repository = https://github.com/Pro-Panda/CowBulls-activity
+repository = https://github.com/sugarlabs/CowBulls-activity

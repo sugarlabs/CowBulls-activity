@@ -1,3 +1,20 @@
+3
+* Regenerate POT file (Jui Pradhan)
+* Fix port to python3 regression and logical error (Jui Pradhan),
+* Fix TypeError (Jui Pradhan),
+* Fix: won/lost emoji is not centered (Jui Pradhan),
+* Fix EOL for new-game.svg (Jui Pradhan),
+* Flake8 fixes (Jui Pradhan),
+* Fix level drop-down (Jui Pradhan),
+* Fix Hard level number entry to fit the screen (Jui Pradhan),
+* Handle videoresize (Ayush Nawal),
+* Add icon for restart (Ayush Nawal),
+* Fix force redraw (Ayush Nawal, Jui Pradhan),
+* Remove black screen when play button is pressed (Ayush Nawal),
+* Port to python3 (Jui Pradhan, Ayush Nawal),
+* Improve Readme and instructions (Rahul Bothra),
+* Disable next round button on changing levels (Rahul Bothra)
+
 2
 * Fix image overlap on different screen sizes
 
